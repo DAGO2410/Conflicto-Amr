@@ -37,9 +37,9 @@ class formulario{
 		return $html;
 	}
 	
-	public function input($type='', $id='', $name='', $class='',$value=''){
+	public function input($type='', $id='', $name='', $class='',$value='',$onclick=""){
 		$html="";
-		$html.="<input type='".$type."' id='".$id."' name='".$name."' class='".$class."' value='".$value."' />";
+		$html.="<input type='".$type."' id='".$id."' name='".$name."' class='".$class."' value='".$value."' onclick='".$onclick."'/>";
 		return $html;
 	}
 

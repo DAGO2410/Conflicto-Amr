@@ -19,8 +19,8 @@ function agregarSubtema(){
 	});
 }
 
-function jugar(){
-	
+function jugar(id){
+	window.location = "http://localhost/dashboard/conflicto_arm/vistas/jugar_preguntas.php?id="+id;
 }
 
 function volver(){

@@ -74,9 +74,46 @@ function ajaxGuardarSubtema(id,nombre_subtema,video,texto,tema){
 		success: function(respuesta){
 			if(respuesta.mensaje == "ok"){
 				alert("El subtema se ha guardado correctamente");
-				window.location="http://localhost/dashboard/conflicto_arm/vistas/inicio.php";
+				//window.location="http://localhost/dashboard/conflicto_arm/vistas/inicio.php";
 			}else if(respuesta.mensaje == "Error"){
 				alert("El subtema no se ha guardado correctamente envie la solicitud de nuevo");
+			}
+		}
+	});
+}
+
+function ajaxGuardarPreguntas(nombre_pregunta, nombre_subtema,texto_pregunta, respuesta_1, respuesta_2, respuesta_3, respuesta_4, pregunta_correcta){
+	$.ajax({
+		url: "http://localhost/dashboard/conflicto_arm/controlador/GuardarPregunta.php",
+		data:{"consulta":"guardarPreguntas","nombre_pregunta":nombre_pregunta,"nombre_subtema":nombre_subtema,"texto_pregunta":texto_pregunta,"respuesta_1":respuesta_1,"respuesta_2":respuesta_2,"respuesta_3":respuesta_3,"respuesta_4":respuesta_4, "pregunta_correcta":pregunta_correcta},
+		type: "post",
+		dataType: "json",
+		success: function(respuesta){
+			if(respuesta.mensaje == "ERROR"){
+				alert("EL SUB TEMA NO EXISTE EN BASE DE DATOS")
+			}
+			else if(respuesta.mensaje == "Error Insert"){
+				alert("No se han guardado las preguntas correctamente");
+			}else{
+				alert("Las preguntas han sido creadas correctamente");
+				window.location = "http://localhost/dashboard/conflicto_arm/vistas/inicio.php";
+			}
+		}
+	});
+}
+
+function ajaxCalificacion(id,respuesta,nombre_pregunta){
+	$.ajax({
+		url:"http://localhost/dashboard/conflicto_arm/controlador/calificarPregunta.php",
+		data:{"consulta":"calificarRespuesta","pregunta_id":id,"respuesta":respuesta,"nombre_pregunta":nombre_pregunta},
+		type:"post",
+		dataType:"json",
+		success: function(respuesta){
+			if(respuesta.mensaje == "ERROR"){
+				alert("Su calificacion no se creado correctamente");
+			}else if(respuesta.mensaje == "ok"){
+				$("#calificacion_"+id).html("Calificacion: "+respuesta.puntuacion);
+				$("#button_calificar_"+id).css("display","none");
 			}
 		}
 	});

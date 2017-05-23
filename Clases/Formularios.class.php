@@ -1,5 +1,6 @@
 <?php
 $raiz = "C:/xampp/htdocs/dashboard/conflicto_arm/";
+include_once($raiz."clases/ConnectDB.class.php");
 include_once($raiz."clases/formulario.class.php");
 include_once($raiz."clases/conflicto_arm.class.php");
 class Formularios extends formulario{
@@ -82,6 +83,8 @@ class Formularios extends formulario{
 			$html.="<table>";
 			$html.="<tr>";
 			$html.="<th>SUBTEMA</th>";
+			$html.="<th>VIDEO</th>";
+			$html.="<th>TEXTO</th>";
 			if($permisos == "ADMIN"){
 				$html.="<th>MODIFICAR</th>";
 				$html.="<th>ELIMINAR</th>";
@@ -92,11 +95,13 @@ class Formularios extends formulario{
 			foreach($subtemas as $k=>$v){
 				$html.="<tr>";
 				$html.="<td>".$v['nombre_subtema']."</td>";
+				$html.="<td><a href='".$v["video"]."'>".$v["video"]."</a></td>";
+				$html.="<td>".$v["texto"]."</td>";
 				if($permisos == "ADMIN"){
 					$html.="<td><button id='button_modificar_".$v['id']."' onclick='modificarSubtema(".$v['id'].")'>Modificar</button></td>";
 					$html.="<td><button id='button_eliminar_".$v['id']."' onclick='eliminarSubtema(".$v['id'].")'>Eliminar</button></td>";
 				}else if($permisos == "PLAYER"){
-					$html.="<td><button id='button_jugar_".$v['id']."'>Jugar</button></td>";
+					$html.="<td><button id='button_jugar_".$v['id']."' onclick='jugar(".$v['id'].")'>Jugar</button></td>";
 				}
 				$html.="</tr>";
 				$html.="<input type='hidden' id='input_tema' value='".$tema."'>";
@@ -114,6 +119,47 @@ class Formularios extends formulario{
 			$html.="<button id='button_volver'>Volver</button>";
 			return $html;
 		}
+	}
+
+	public function crearFormJugarPreguntas($resultado){
+		$conexion = new ConnectDB();
+		$conexion->conexion();
+		$html="";
+		$content="";
+		foreach($resultado as $k=>$v){
+			$sql_respuestas = "SELECT count(1) as contar, puntuacion FROM usuario_respuestas WHERE pregunta_id = ".$v["pregunta_id"];
+			$ejecucion = $conexion->consultar($sql_respuestas);
+			$contar = $ejecucion["contar"];
+			$puntuacion = $ejecucion["puntuacion"];
+			$content.=$this->label("label_nombre_pregunta_".$v['pregunta_id'],"label_nombre","labels",$v["nombre_pregunta"]);
+			$content.=$this->br();
+			$content.=$this->label("label_texto_pregunta_".$v["pregunta_id"], "label_texto_pregunta","labels",$v["texto_pregunta"]);
+			$content.=$this->br();
+			$content.="<input type='checkbox' id='check_respuesta_1_".$v["pregunta_id"]."' name='check_respuesta_".$v['pregunta_id']."' class='checks_".$v["pregunta_id"]."' value='".$v["respuesta_1"]."'>".$v["respuesta_1"];
+			$content.=$this->br();
+			$content.="<input type='checkbox' id='check_respuesta_2_".$v["pregunta_id"]."' name='check_respuesta_".$v['pregunta_id']."' class='checks_".$v["pregunta_id"]."' value='".$v["respuesta_2"]."'>".$v["respuesta_2"];
+			$content.=$this->br();
+			$content.="<input type='checkbox' id='check_respuesta_3_".$v["pregunta_id"]."' name='check_respuesta_".$v['pregunta_id']."' class='checks_".$v["pregunta_id"]."' value='".$v["respuesta_3"]."'>".$v["respuesta_3"];
+			$content.=$this->br();
+			$content.="<input type='checkbox' id='check_respuesta_4_".$v["pregunta_id"]."' name='check_respuesta_".$v['pregunta_id']."' class='checks_".$v["pregunta_id"]."' value='".$v["respuesta_4"]."'>".$v["respuesta_4"];
+			$content.=$this->br();
+			$content.=$this->input("hidden","input_puntuacion_".$v["pregunta_id"],"input_puntuacion","inputs");
+			if($contar == 0 ){
+				$content.=$this->input("button","button_calificar_".$v["pregunta_id"],"button_calificar","buttons","Calificar","calificar(".$v["pregunta_id"].")");	
+			}
+			$content.=$this->br();
+			if($contar == 0){
+				$content.="<label id='calificacion_".$v["pregunta_id"]."'></label>";	
+			}else{
+				$content.="<label id='calificacion_".$v["pregunta_id"]."'>Calificacion: ".$puntuacion."</label>";	
+			}
+			$content.=$this->br();
+			$content.=$this->br();
+		}
+		$content.=$this->input("button","button_listo","button_listo","buttons","Listo");
+		$html = $this->form("form_registro","form_registro","forms","post","",$content);
+
+		return $html;
 	}
 }
 ?>
