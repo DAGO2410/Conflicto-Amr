@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-05-2017 a las 06:20:57
+-- Tiempo de generación: 24-05-2017 a las 02:40:12
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 7.1.2
 
@@ -60,6 +60,18 @@ CREATE TABLE `preguntas` (
   `activo` varchar(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `preguntas`
+--
+
+INSERT INTO `preguntas` (`id`, `nombre_pregunta`, `texto_pregunta`, `subtema_id`, `respuesta_1`, `respuesta_2`, `respuesta_3`, `respuesta_4`, `pregunta_correcta`, `activo`) VALUES
+(1, 'inicio conflicto', 'En que aÃ±o inicio el conflicto armado en colombia', 1, '1994', '1895', '1800', '1500', '1895', ''),
+(2, 'grupo armado', 'cual fue el primer grupo armado del conflicto', 1, 'auc', 'farc', 'eln', 'm19', 'auc', ''),
+(3, 'pelea', 'porque peleaban los grupos aramdos', 3, 'oro', 'territorio', 'enemistad', 'ninguna de las anteriores', 'territorio', ''),
+(4, 'toma', 'Que tomaban los grupos armados de la sociedad', 3, 'secuestrados', 'tierras', 'dinero', 'familias', 'secuestrados', ''),
+(5, 'inicio proceso', 'En que gobierno inicio el proceso de paz', 5, 'uribe', 'santos', 'pastrana', 'bolivar', 'pastrana', ''),
+(6, 'fin procesos', 'En que gobierno se culminaron los procesos de paz con las farc', 5, 'uribe', 'santos', 'pastrana', 'maduro', 'santos', '');
+
 -- --------------------------------------------------------
 
 --
@@ -80,11 +92,9 @@ CREATE TABLE `subtemas` (
 --
 
 INSERT INTO `subtemas` (`id`, `nombre_subtema`, `video`, `texto`, `activo`, `tema`) VALUES
-(1, 'montes de maria', 'http://www.youtube.com.co', 'en ese lugar los campesinos se alzaron en armas y asi nacieron las farc', '1', 'inicio'),
-(2, 'subtema prueba', 'http://www.youtube.com', 'subtema de prueba', '1', 'nudo'),
-(3, 'Proceso', 'http://www.youtube.com', 'Proceso de Paz Uribe', '1', 'desenlace'),
-(4, 'farc', '', 'las farc se alzaron en armas por los derechos del peblo', '1', 'inicio'),
-(5, 'fuerza publica', '', 'colombia', '1', 'inicio');
+(1, 'Inicion del conflicto', 'http://www.youtube.com', 'el conflicto armado inicion en el aÃ±o de 1895 y el principal grupo armado fue auc', '1', 'inicio'),
+(3, 'Guerra', 'http://www.youtube.com', 'grupos armado peleaban principalmente por el territorio y toamaban secuestrados', '1', 'nudo'),
+(5, 'Proceso', 'http://www.youtube.com', 'Los procesos de paz iniciaron desde la presidencia de pastrana pero en el gobierno santos se culminaron', '1', 'desenlace');
 
 -- --------------------------------------------------------
 
@@ -112,7 +122,36 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `nombre_avatar`, `avatar`, `fecha_nacimiento`, `sexo`, `correo_electronico`, `password`, `confirmar_password`, `permisos_id`) VALUES
 (1, 'Dago', 'Arias', 'dagoa', '', '0000-00-00', 'M', 'dago@gmail.com', 'skate', 'skate', '1'),
-(2, 'Santiago', 'Quevedo', 'Nas', '', '1994-04-20', 'M', 'nasquevedo@gmail.com', 'skatewayteam', 'skatewayteam', '2');
+(2, 'Santiago', 'Quevedo', 'Nas', '', '1994-04-20', 'M', 'nasquevedo@gmail.com', 'skatewayteam', 'skatewayteam', '2'),
+(3, 'DAni', 'umbarila', 'dani891122', '', '1989-11-22', 'M', 'dani@mail.com', '12345678', '12345678', '2'),
+(4, 'paco', 'casual', 'paco123', '', '1900-02-02', 'M', 'aaa@ss.com', 'aaa123', 'aaa123', '2');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario_respuestas`
+--
+
+CREATE TABLE `usuario_respuestas` (
+  `id` int(12) NOT NULL,
+  `usuario_id` int(12) NOT NULL,
+  `pregunta_id` int(12) NOT NULL,
+  `respuesta` varchar(200) NOT NULL,
+  `puntuacion` int(1) NOT NULL,
+  `activo` int(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `usuario_respuestas`
+--
+
+INSERT INTO `usuario_respuestas` (`id`, `usuario_id`, `pregunta_id`, `respuesta`, `puntuacion`, `activo`) VALUES
+(7, 4, 1, '1895', 1, 1),
+(8, 4, 2, 'auc', 1, 1),
+(9, 4, 3, 'territorio', 1, 1),
+(10, 4, 4, 'tierras', 0, 1),
+(11, 4, 5, 'pastrana', 1, 1),
+(12, 4, 6, 'santos', 1, 1);
 
 --
 -- Índices para tablas volcadas
@@ -147,6 +186,12 @@ ALTER TABLE `usuarios`
   ADD UNIQUE KEY `idx_correo_electronico` (`correo_electronico`);
 
 --
+-- Indices de la tabla `usuario_respuestas`
+--
+ALTER TABLE `usuario_respuestas`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -159,7 +204,7 @@ ALTER TABLE `permisos`
 -- AUTO_INCREMENT de la tabla `preguntas`
 --
 ALTER TABLE `preguntas`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT de la tabla `subtemas`
 --
@@ -169,7 +214,12 @@ ALTER TABLE `subtemas`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT de la tabla `usuario_respuestas`
+--
+ALTER TABLE `usuario_respuestas`
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
