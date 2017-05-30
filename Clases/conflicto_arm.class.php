@@ -65,21 +65,28 @@ class ConflictoArm{
 				return $datos = array("mensaje"=>"Error");
 			}
 		}else{
-			$sql_insert = "INSERT INTO subtemas(nombre_subtema, 
-											video, 
-											texto, 
-											tema,
-											activo)VALUES(
-											'".$nombre_tema."',
-											'".$video."',
-											'".$texto."',
-											'".$tema."',
-											'1')";
-			$ejecucion = $this->connectDB->ejecutarQuery($sql_insert);
-			if($ejecucion){
-				return $datos = array("mensaje"=>"ok");
+			$sql_select_subtema = "SELECT count(1) as contar FROM subtemas WHERE nombre_subtema = ".$nombre_tema;
+			$ejecutar = $this->connectDB->consultar($sql_select_subtema);
+			
+			if($ejecutar["contar"] == 0){
+				$sql_insert = "INSERT INTO subtemas(nombre_subtema, 
+												video, 
+												texto, 
+												tema,
+												activo)VALUES(
+												'".$nombre_tema."',
+												'".$video."',
+												'".$texto."',
+												'".$tema."',
+												'1')";
+				$ejecucion = $this->connectDB->ejecutarQuery($sql_insert);
+				if($ejecucion){
+					return $datos = array("mensaje"=>"ok");
+				}else{
+					return $datos = array("mensaje"=>"Error");
+				}
 			}else{
-				return $datos = array("mensaje"=>"Error");
+				return $datos = array("mensaje"=>"Existe");
 			}
 		}
 	}
@@ -121,7 +128,7 @@ class ConflictoArm{
 		}
 	}
 
-	public function obtenerSubtemas($id){
+	public function obtenerSubtemas($id, $usuario_id){
 		$formularios = new Formularios();
 
 		$sql_subtemas = "SELECT
@@ -144,7 +151,7 @@ class ConflictoArm{
 
 		$ejecucion = $this->connectDB->consultarTabla($sql_subtemas);
 		if(count($ejecucion) > 0){
-			return $formularios->crearFormJugarPreguntas($ejecucion);	
+			return $formularios->crearFormJugarPreguntas($ejecucion, $usuario_id);
 		}else{
 			return "<label>El subtema se creo incorrectamente</label>";
 		}
@@ -195,6 +202,116 @@ class ConflictoArm{
 			}else{
 				return "Calificacion general: ".$ejecucion["suma"];
 			}
+		}
+	}
+	
+	public function obtenerConfiguracion($usuario_id){
+		$formularios = new Formularios();
+		$sql_config = "SELECT
+							nombre,
+							apellido,
+							nombre_avatar,
+							avatar,
+							sexo,
+							correo_electronico,
+							fecha_nacimiento
+						FROM
+							usuarios
+						WHERE
+							id = ".$usuario_id;
+		
+		$ejecucion = $this->connectDB->consultar($sql_config);
+		
+		if(count($ejecucion) > 0){
+			return $formularios->crearFormConfig($ejecucion, $usuario_id);
+		}
+	}
+	
+	public function cambiarPassword($usuario_id, $password_actual, $password_nueva,$password_confirmar){
+		$sql_password = "SELECT count(1) as contar FROM usuarios WHERE password = '".$password_actual."' AND id = ".$usuario_id;
+		$consultar = $this->connectDB->consultar($sql_password);
+		if($consultar["contar"] == 0){
+			return $datos = array("mensaje"=>"Error password");
+		}else{
+			$update_password = "UPDATE 
+									usuarios 
+								SET 
+									password = '".$password_nueva."',
+									confirmar_password = '".$password_confirmar."'
+								WHERE
+									id = ".$usuario_id;
+			$ejecucion = $this->connectDB->ejecutarQuery($update_password);
+			
+			if($ejecucion){
+				return $datos = array("mensaje"=>"ok");
+			}else{
+				return $datos = array("mensaje"=>"Error");
+			}
+		}
+	}
+	
+	public function actualizarInformacion($usuario_id,$password,$nombre_usuario,$apellido_usuario,$sexo,$correo_electronico,$fecha_nacimiento){
+		$sql_password = "SELECT count(1) as contar FROM usuarios WHERE id=".$usuario_id." AND password = '".$password."'";
+		$consultar = $this->connectDB->consultar($sql_password);
+		if($consultar["contar"] == 0){
+			return $datos = array("mensaje"=>"Error password");
+		}else{
+			$update_info = "UPDATE 
+								usuarios
+							SET
+								nombre = '".$nombre_usuario."',
+								apellido = '".$apellido_usuario."',
+								";
+			if($sexo != ""){
+				$update_info.="sexo = '".$sexo."',";
+			}
+			$update_info.= "correo_electronico = '".$correo_electronico."',
+							fecha_nacimiento = '".$fecha_nacimiento."'
+							WHERE
+								id = ".$usuario_id;
+			$ejecucion = $this->connectDB->ejecutarQuery($update_info);
+			if($ejecucion){
+				return $datos = array("mensaje"=>"ok");
+			}else{
+				return $datos = array("mensaje"=>"Error");
+			}
+		}
+	}
+	
+	public function cargarRanking(){
+		$sql_ranking = "SELECT 
+							u.nombre_avatar,
+							sum(ur.puntuacion) as suma
+						FROM usuario_respuestas ur
+						INNER JOIN usuarios u ON u.id = ur.usuario_id
+						GROUP BY u.nombre_avatar
+						ORDER BY suma desc";
+		$consultar = $this->connectDB->consultarTabla($sql_ranking);
+		
+		if(count($consultar) > 0){
+			$count = 0;
+			
+			$html="<center>";
+			$html.="<table>";
+			$html.="<tr>";
+			$html.="<th>#</th>";
+			$html.="<th>Nombre Avatar</th>";
+			$html.="<th>Puntuacion</th>";
+			$html.="</tr>";
+			foreach($consultar as $k=>$v){
+				$count++;
+				$html.="<tr>";
+				$html.="<td>".$count."</td>";
+				foreach($v as $key=>$value){
+					$html.="<td>".$value."</td>";
+				}
+				$html.="</tr>";
+			}
+			$html.="</table>";
+			$html.="</center>";
+			return $html;
+		}else{
+			return "Aun no hay calificaciones para el Ranking";
 		}
 	}
 }

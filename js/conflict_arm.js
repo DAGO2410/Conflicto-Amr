@@ -1,6 +1,8 @@
 $(document).ready(function(){
+	buttonInicioSession();
 	buttonLogin();
 	buttonRegistro();
+	cierreSession();
 });
 
 function buttonLogin(){
@@ -22,6 +24,18 @@ function buttonLogin(){
 function buttonRegistro(){
 	$("#button_registro").on('click',function(){
 		window.location = 'http://localhost/dashboard/conflicto_arm/Vistas/registro.php';
+	});
+}
+
+function buttonInicioSession(){
+	$("#button_inicio_session").on("click", function(){
+		window.location = "http://localhost/dashboard/conflicto_arm/index.php";
+	});
+}
+
+function cierreSession(){
+	$("#button_cierre_session").on("click", function(){
+		ajaxCierreSession();
 	});
 }
 

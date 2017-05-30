@@ -5,14 +5,15 @@ function ajaxLogin(usuario, password){
 		data:{"consulta":"logear","usuario":usuario,"password":password},
 		type:"post",
 		dataType:"json",
-		beforesend:function(){
-			alert("Auntenticando...");
+		beforeSend:function(){
+			$("#div_login").append("<br><label class='labels'>Autenticando...</label>");
 		},
 		success: function(respuesta){
 			if(respuesta.mensaje == "ok"){
 				window.location = "http://localhost/dashboard/conflicto_arm/vistas/inicio.php";
 			}else if(respuesta.mensaje == "Error"){
 				alert("El usuario no existe");
+				$("#div_login").find("label").remove();
 			}
 		}
 	});
@@ -65,7 +66,7 @@ function ajaxEliminarSubtema(id){
 	});
 }
 
-function ajaxGuardarSubtema(id,nombre_subtema,video,texto,tema){
+function ajaxGuardarSubtema(id,nombre_subtema,video,texto,tema, nombre_pregunta,nombre_subtema,texto_pregunta, respuesta_1, respuesta_2, respuesta_3, respuesta_4,pregunta_correcta){
 	$.ajax({
 		url:"http://localhost/dashboard/conflicto_arm/controlador/GuardarSubtema.php",
 		data:{"consulta":"guardarSubtema","id":id,"nombre_subtema":nombre_subtema,"video":video,"texto":texto,"tema":tema},
@@ -74,9 +75,11 @@ function ajaxGuardarSubtema(id,nombre_subtema,video,texto,tema){
 		success: function(respuesta){
 			if(respuesta.mensaje == "ok"){
 				alert("El subtema se ha guardado correctamente");
-				//window.location="http://localhost/dashboard/conflicto_arm/vistas/inicio.php";
+				ajaxGuardarPreguntas(nombre_pregunta,nombre_subtema,texto_pregunta, respuesta_1, respuesta_2, respuesta_3, respuesta_4,pregunta_correcta);
 			}else if(respuesta.mensaje == "Error"){
 				alert("El subtema no se ha guardado correctamente envie la solicitud de nuevo");
+			}else if(respuesta.mensaje == "Existe"){
+				alert("El subtema ya existe");
 			}
 		}
 	});
@@ -90,7 +93,7 @@ function ajaxGuardarPreguntas(nombre_pregunta, nombre_subtema,texto_pregunta, re
 		dataType: "json",
 		success: function(respuesta){
 			if(respuesta.mensaje == "ERROR"){
-				alert("EL SUB TEMA NO EXISTE EN BASE DE DATOS")
+				alert("EL SUBTEMA NO EXISTE EN BASE DE DATOS")
 			}
 			else if(respuesta.mensaje == "Error Insert"){
 				alert("No se han guardado las preguntas correctamente");
@@ -114,6 +117,68 @@ function ajaxCalificacion(id,respuesta,nombre_pregunta){
 			}else if(respuesta.mensaje == "ok"){
 				$("#calificacion_"+id).html("Calificacion: "+respuesta.puntuacion);
 				$("#button_calificar_"+id).css("display","none");
+			}
+		}
+	});
+}
+
+function ajaxCambioPassword(usuario_id){
+	$.ajax({
+		url: "http://localhost/dashboard/conflicto_arm/controlador/CambioPassword.php",
+		data:{"consulta":"crearFormCambio","usuario_id":usuario_id},
+		type: "post",
+		dataType: "json",
+		success: function(respuesta){
+			$("#article_configuracion").html(respuesta);
+		}
+	});
+}
+
+function ajaxCambiarPassword(usuario_id,password_actual,password_nueva,password_confirmar){
+	$.ajax({
+		url: "http://localhost/dashboard/conflicto_arm/controlador/CambioPassword.php",
+		data: {"consulta":"cambiarPassword","usuario_id":usuario_id,"password_actual":password_actual,"password_nueva":password_nueva,"password_confirmar":password_confirmar},
+		type: "post",
+		dataType: "json",
+		success: function(respuesta){
+			if(respuesta.mensaje == "ok"){
+				alert("El password se ha actualizado correctamente");
+				window.location = "http://localhost/dashboard/conflicto_arm/vistas/configuracion.php";
+			}else if(respuesta.mensaje == "Error password"){
+				alert("Password incorrecto");
+			}else if(respuesta.mensaje == "Error"){
+				alert("El password no se ha actualizado correctamente");
+			}
+		}
+	});
+}
+
+function ajaxActualizaInformacion(usuario_id){
+	$.ajax({
+		url: "http://localhost/dashboard/conflicto_arm/controlador/ActualizarInformacion.php",
+		data:{"consulta":"crearFormActualizar","usuario_id":usuario_id},
+		type: "post",
+		dataType: "json",
+		success: function(respuesta){
+			$("#article_configuracion").html(respuesta);
+		}
+	});
+}
+
+function ajaxActualizarInfo(usuario_id,password,nombre_usuario,apellido_usuario,sexo,correo_electronico,fecha_nacimiento){
+	$.ajax({
+		url: "http://localhost/dashboard/conflicto_arm/controlador/ActualizarInformacion.php",
+		data:{"consulta":"actualizarInformacion","usuario_id":usuario_id,"password":password,"nombre_usuario":nombre_usuario,"apellido_usuario":apellido_usuario,"sexo":sexo,"correo_electronico":correo_electronico,"fecha_nacimiento":fecha_nacimiento},
+		type:"post",
+		dataType: "json",
+		success: function(respuesta){
+			if(respuesta.mensaje == "Error password"){
+				alert("Password incorrecto");
+			}else if(respuesta.mensaje == "Error"){
+				alert("No se ha actualizado la informacion");
+			}else if(respuesta.mensaje == "ok"){
+				alert("Se ha actualizado la informacion correctamente");
+				window.location = "http://localhost/dashboard/conflicto_arm/vistas/configuracion.php";
 			}
 		}
 	});

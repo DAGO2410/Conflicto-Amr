@@ -4,9 +4,13 @@ $(document).ready(function(){
 
 function calificar(id){
 	var respuesta;
+	count=1;
 	respuesta = $(".checks_"+id+":checked").val();
 	var nombre_pregunta = $("#label_nombre_pregunta_"+id).html();
-	if(respuesta == undefined){
+	if($(".checks_"+id+":checked").length > 1){
+		alert("Debe seleccionar una sola respuesta");
+		return false;
+	}else if(respuesta == undefined){
 		alert("Debe seleccionar una respuesta");
 		return false;
 	}

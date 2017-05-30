@@ -47,11 +47,10 @@ function guardarSubtema(){
 			alert("Debe ingresar el nombre subtema");
 			return false;
 		}else if(texto == ""){
-			alert("Debe ingresar el tema");
+			alert("Debe ingresar el texo del subtema");
 			return false;
 		}else{
-			ajaxGuardarSubtema(id,nombre_subtema,video,texto,tema);
-			ajaxGuardarPreguntas(nombre_pregunta,nombre_subtema,texto_pregunta, respuesta_1, respuesta_2, respuesta_3, respuesta_4,pregunta_correcta);
+			ajaxGuardarSubtema(id,nombre_subtema,video,texto,tema, nombre_pregunta,nombre_subtema,texto_pregunta, respuesta_1, respuesta_2, respuesta_3, respuesta_4,pregunta_correcta);
 		}
 	});
 }

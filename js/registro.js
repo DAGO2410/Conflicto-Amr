@@ -2,6 +2,7 @@ $(document).ready(function(){
 	registrarse();
 	volver();
 	limpiar();
+	buttonIniciarSession();
 });
 
 
@@ -41,19 +42,19 @@ function registrarse(){
 		var tipo_usuario = $("#combo_tipo_usuario").val();
 
 		if(nombre == ""){
-			alert("Deb ingresar un nombre");
+			alert("Debe ingresar un nombre");
 			return false	
 		}else if(apellido == ""){
-			alert("Deb ingresar un apellido");
+			alert("Debe ingresar un apellido");
 			return false
 		}else if(nombre_avatar == ""){
 			alert("Deb ingresar un nombre de avatar");
 			return false
 		}else if(sexo == ""){
-			alert("Deb ingresar un sexo");
+			alert("Debee ingresar un sexo");
 			return false
 		}else if(email == ""){
-			alert("Deb ingresar un correo electronico");
+			alert("Debe ingresar un correo electronico");
 			return false
 		}else if(fecha_nac == ""){
 			alert("Debe ingresar una fecha de nacimiento");
@@ -80,5 +81,11 @@ function registrarse(){
 				return false;
 			}
 		}
+	});
+}
+
+function buttonIniciarSession(){
+	$("#button_inicio_session").on("click",function(){
+		window.location = "http://localhost/dashboard/conflicto_arm/index.php";
 	});
 }

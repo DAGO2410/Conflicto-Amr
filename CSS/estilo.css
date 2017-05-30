@@ -1,0 +1,33 @@
+section{
+	border-width: 1px 1px 1px 1px;
+	border-style: solid;
+	border-color: transparent;
+	width:50%;
+	height:90%;
+	padding: 6%;
+	margin: 12%;
+}
+
+article{
+	border-width: 1px 1px 1px 1px;
+	border-style: solid;
+	border-color:transparent;
+	padding: 10px;
+	margin:10px;
+}
+
+#div_login{
+	text-align:center;
+	font-family:Verdana;
+}
+
+#input_usuario{
+	width: 200px;
+	height:auto;
+}
+
+
+#input_password{
+	width: 200px;
+	height:auto;
+}

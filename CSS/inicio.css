@@ -1,0 +1,37 @@
+.buttons_inicio{
+	border-width: 1px 1px 1px 1px;
+	border-style: solid;
+	border-color: silver;
+	border-radius: 5px 5px 5px 5px;
+	width:600px;
+	height:100px;
+	font-size: 20px;
+	
+}
+
+.buttons_inicio:hover{
+	border-color: black;
+	box-shadow: 2px 2px 2px 2px silver;
+}
+
+#div_inicio{
+	text-align:center;
+}
+
+#section_inicio{
+	border-width: 1px 1px 1px 1px;
+	border-style: solid;
+	border-color: transparent;
+	float:left;
+	width:98%;
+	height: 500px;
+}
+
+#article_inicio{
+	border-width:1px 1px 1px 1px;
+	border-style: solid;
+	border-color: transparent;
+	margin:10px;
+	padding: 10px;
+	height: auto;
+}

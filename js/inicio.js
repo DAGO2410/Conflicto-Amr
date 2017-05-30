@@ -1,15 +1,8 @@
 $(document).ready(function(){
-	cierreSession();
 	inicio();
 	nudo();
 	desenlace();
 });
-
-function cierreSession(){
-	$("#button_cierre_session").on("click", function(){
-		ajaxCierreSession();
-	});
-}
 
 function inicio(){
 	$("#input_button_inicio").on("click", function(){

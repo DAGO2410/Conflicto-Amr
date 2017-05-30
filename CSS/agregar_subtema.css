@@ -1,0 +1,19 @@
+#section_agregar{
+	border-width: 1px 1px 1px 1px;
+	border-style: solid;
+	border-color: transparent;
+	float:left;
+	width:98%;
+	height: 500px;
+}
+
+#article_agregar{
+	border-width:1px 1px 1px 1px;
+	border-style: solid;
+	border-color: transparent;
+	margin:10px;
+	padding: 10px;
+	height: 460px;
+	overfload: true;
+	overflow-y: scroll;
+}

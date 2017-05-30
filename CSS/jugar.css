@@ -1,0 +1,47 @@
+#section_jugar{
+	border-width: 1px 1px 1px 1px;
+	border-style: solid;
+	border-color: transparent;
+	float:left;
+	width:98%;
+	height: 500px;
+}
+
+#article_jugar{
+	border-width:1px 1px 1px 1px;
+	border-style: solid;
+	border-color: transparent;
+	margin:10px;
+	padding: 10px;
+	height: 460px;
+	overfload: true;
+	overflow-y: scroll;
+}
+
+table{
+	border-width: 1px 1px 1px 1px;
+	border-style: solid;
+	border-color: black;
+}
+
+table tr{
+	border-width: 1px 1px 1px 1px;
+	border-style: solid;
+	border-color: black;
+}
+
+table th{
+	border-width: 1px 1px 1px 1px;
+	border-style: solid;
+	border-color:black;
+	background-color: blue;
+	text-align:center;
+	color:white;
+}
+
+table td{
+	border-width: 1px 1px 1px 1px;
+	border-style: solid;
+	border-color:black;
+	text-align: center;
+}

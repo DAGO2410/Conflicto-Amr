@@ -1,0 +1,17 @@
+#section_registro{
+	border-width: 1px 1px 1px 1px;
+	border-style: solid;
+	border-color: transparent;
+	float:left;
+	width: 98%;
+	padding:10px;
+	height: 500px;
+}
+
+#article_registro{
+	border-width: 1px 1px 1px 1px;
+	border-style: solid;
+	border-color: transparent;
+	float:center;
+	padding:10px;
+}

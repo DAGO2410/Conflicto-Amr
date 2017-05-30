@@ -31,6 +31,12 @@ class formulario{
 		return $html;
 	}
 	
+	public function espacio(){
+		$html="";
+		$html.="&nsbp";
+		return $html;
+	}
+	
 	public function label($id="",$name="", $class="", $value=""){
 		$html="";
 		$html.="<label id='".$id."' name='".$name."' class='".$class."'>".$value."</label>";
